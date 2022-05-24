@@ -24,24 +24,24 @@ public class Player {
 		int knock = 0;
 
 		int knocked = knockPines(bowl);
-		System.out.printf("Knocked1 : %d\n", + knocked);
+		System.out.printf("Debug ： Knocked1 is %d\n", + knocked);
 		if(knocked == 0){
 			knocked = 1;
 		}
 
 		Random random = new Random();
 		int firstKnocked =  random.nextInt(0, knocked);
-		System.out.printf("firstKnocked : %d\n", + firstKnocked);
+		System.out.printf("Debug ： firstKnocked is %d\n", + firstKnocked);
 		if(firstKnocked == 0){
 			firstKnocked = 1;
 		}
 		int secondKnocked = random.nextInt(0, firstKnocked);
-		System.out.printf("secondKnocked : %d\n", + secondKnocked);
+		System.out.printf("Debug ： secondKnocked is %d\n", + secondKnocked);
 		if(secondKnocked == 0){
 			secondKnocked = 1;
 		}
 		int thirdKnocked = random.nextInt(0, secondKnocked);
-		System.out.printf("thirdKnocked : %d\n", + thirdKnocked);
+		System.out.printf("Debug ： thirdKnocked is %d\n", + thirdKnocked);
 		switch(direction){
 			case "right" -> {
 				int extra1 = subtractPines(firstKnocked, "right", 0);
@@ -66,7 +66,7 @@ public class Player {
 			}
 		}
 		board.setScore(frame, throwing, knock);
-		System.out.printf("Knocked2 : %d\n", + knock);
+		System.out.printf("Debug : Knocked2 is %d\n", + knock);
 	}
 
 	public int subtractPines(int knocked, String direction, int extra) {

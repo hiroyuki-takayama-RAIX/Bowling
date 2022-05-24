@@ -7,6 +7,10 @@ public class ScoreBoard {
 	private String[] score10 = new String[]{"0", "0", "0"};
 	private String[] frameScore = new String[]{"0","0","0","0","0","0","0","0","0","0"};
 
+	public int getFrameScore(int frame){
+		return Integer.parseInt(this.frameScore[frame]);
+	}
+
 	public void setScore(int frame, int throwing, int score){
 		switch(frame){
 			case 9 -> {

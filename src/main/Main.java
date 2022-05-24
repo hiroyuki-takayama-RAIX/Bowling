@@ -17,6 +17,7 @@ public class Main {
 		System.out.println();
 		System.out.println(npc.getName() + "のスコアボード");
 		npc.board.displayBoard();
+		System.out.println();
 
 		System.out.println("ゲーム開始!!!");
 		for(int i = 0; i < 9; i ++){
@@ -54,11 +55,13 @@ public class Main {
 						direction = "right";
 						break;
 					} else {
-						System.out.println("Invalid Input : " + input);
+						System.out.println("無効な入力 : " + input);
 					}
 				}
 				System.out.printf("Debug ： Bowl %s, Direction %s\n", bowl, direction);
+				System.out.println();
 				player.throwBowl(bowl, direction, i, j);
+				System.out.println();
 				player.pines.displayPines();
 				player.board.arrangeScore(i, j);
 				System.out.println();
@@ -81,6 +84,7 @@ public class Main {
 			Random npcsChoice = new Random();
 			Scanner anyInput = new Scanner(System.in);
 			for(int j = 0; j < 2; j ++){
+				System.out.println();
 				System.out.printf("%sの %d - %d 目の投球!\n", npc.getName(), i + 1, j + 1);
 				System.out.println("Enter : 次へ");
 				String anyline = anyInput.nextLine();
@@ -105,6 +109,7 @@ public class Main {
 
 				System.out.printf("Debug ： Bowl %s, Direction %s\n", bowl, direction);
 				npc.throwBowl(bowl, direction, i, j);
+				System.out.println();
 				npc.pines.displayPines();
 				npc.board.arrangeScore(i, j);
 				System.out.println();
@@ -122,7 +127,6 @@ public class Main {
 						npc.board.displayBoard();
 					}
 				}
-				System.out.println();
 				System.out.println();
 				System.out.println("Enter : 次へ");
 				anyline = anyInput.nextLine();
@@ -172,6 +176,7 @@ public class Main {
 			}
 			System.out.printf("Debug ： Bowl %s, Direction %s\n", bowl, direction);
 			player.throwBowl(bowl, direction, i, j);
+			System.out.println();
 			player.pines.displayPines();
 			player.board.arrangeScore(i, j);
 			System.out.println();
@@ -218,6 +223,7 @@ public class Main {
 
 			System.out.printf("Debug ： Bowl %s, Direction %s\n", bowl, direction);
 			npc.throwBowl(bowl, direction, i, j);
+			System.out.println();
 			npc.pines.displayPines();
 			npc.board.arrangeScore(i, j);
 			System.out.println();
@@ -236,7 +242,6 @@ public class Main {
 				}
 			}
 			System.out.println();
-			System.out.println();
 			System.out.println("Enter : 次へ");
 			anyline = anyInput.nextLine();
 		}
@@ -244,6 +249,17 @@ public class Main {
 		player.board.displayBoard();
 		System.out.println(npc.getName() + "のスコアボード");
 		npc.board.displayBoard();
+		System.out.println();
+
+		int playerScore = player.board.getFrameScore(i);
+		int npcScore = npc.board.getFrameScore(i);
+		if(playerScore > npcScore){
+			System.out.println(player.getName() + "の勝利！おめでとう！");
+		}else if(playerScore < npcScore){
+			System.out.println(npc.getName() + "の勝利！残念・・・！");
+		}else{
+			System.out.println("引き分け！");
+		}
 	}
 }
 
