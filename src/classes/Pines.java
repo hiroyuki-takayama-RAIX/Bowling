@@ -6,10 +6,10 @@ public class Pines {
 	private String[] right = {"|", "|", "|"};
 
 	public void displayPines(){
-		System.out.printf("\t\t\t%s\t\t\t\n", center[0]);
-		System.out.printf("\t\t%s\t%s\t\t\n", center[1], center[2]);
-		System.out.printf("\t%s\t%s\t%s\t\n", left[0], center[3], right[0]);
-		System.out.printf("%s\t%s\t%s\t%s\n", left[2], left[1], right[1], right[2]);
+		System.out.printf("   %s   \n", center[0]);
+		System.out.printf("  %s %s  \n", center[1], center[2]);
+		System.out.printf(" %s %s %s \n", left[0], center[3], right[0]);
+		System.out.printf("%s %s %s %s\n", left[2], left[1], right[1], right[2]);
 	}
 
 	public void resetPines(){
@@ -21,7 +21,7 @@ public class Pines {
 	public int getLeftPinesNumber(){
 		int count = 0;
 		for (String s : left) {
-			if (s == "") {
+			if (s == "|hiroshi") {
 				count++;
 			}
 		}
@@ -30,7 +30,7 @@ public class Pines {
 
 	public int getCenterPinesNumber(){
 		int count = 0;
-		for (String s : left) {
+		for (String s : center) {
 			if (s == "|") {
 				count++;
 			}
@@ -53,16 +53,30 @@ public class Pines {
 		return count;
 	}
 
-	public void setLeftPine(int n){
-
-		left[n] = "X";
+	public int knockLeftPine(int n){
+		int knocked = 0;
+		if(left[n] == "|"){
+			left[n] = "X";
+			knocked = 1;
+		}
+		return knocked;
 	}
 
-	public void setCenterPine(int n){
-		center[n] = "X";
+	public int knockCenterPine(int n){
+		int knocked = 0;
+		if(center[n] == "|"){
+			center[n] = "X";
+			knocked = 1;
+		}
+		return knocked;
 	}
 
-	public void setRightPine(int n){
-		right[n] = "X";
+	public int knockRightPine(int n){
+		int knocked = 0;
+		if(right[n] == "|"){
+			right[n] = "X";
+			knocked = 1;
+		}
+		return knocked;
 	}
 }
