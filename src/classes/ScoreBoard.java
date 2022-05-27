@@ -4,8 +4,8 @@ import java.util.*;
 
 public class ScoreBoard {
 	public String[][] score0109 = new String[][]{{"0", "0"},{"0", "0"},{"0", "0"},{"0", "0"},{"0", "0"},{"0", "0"},{"0", "0"},{"0", "0"},{"0", "0"}};
-	private String[] score10 = new String[]{"0", "0", "0"};
-	private String[] frameScores = new String[]{"0","0","0","0","0","0","0","0","0","0"};
+	private final String[] score10 = new String[]{"0", "0", "0"};
+	private final String[] frameScores = new String[]{"0","0","0","0","0","0","0","0","0","0"};
 
 	public String getScore(int frame, int throwing){
 		String score;
@@ -57,7 +57,7 @@ public class ScoreBoard {
 					System.out.println("Spare!");
 				}else if(score == 0 && (throwing == 1 || throwing == 2)) {
 					score10[throwing] = "-";
-					System.out.println("");
+					System.out.println();
 				}else if(score == 0 && (throwing == 0)){ 
 					score10[throwing] = "G";
 				}else{

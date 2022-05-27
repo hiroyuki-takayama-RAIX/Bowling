@@ -5,7 +5,7 @@ import java.util.Random;
 import java.util.Scanner;
 
 public class Player {
-	private String name;
+	private final String name;
 	public ScoreBoard board = new ScoreBoard();
 	public Pines pines =  new Pines();
 

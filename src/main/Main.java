@@ -104,7 +104,7 @@ public class Main {
 			}
 		}else{
 			while (true) {
-				System.out.println("どっちのボールを作る?");
+				System.out.println("どっちのボールを使う?");
 				System.out.println("1. 重いボール  2. 軽いボール");
 				String line = new Scanner(System.in).nextLine(); //重いボールと軽いボールを選ぶ
 				if (Objects.equals(line, "1")) { //１と２以外の入力があったときは無効な入力として再度入力を求める
