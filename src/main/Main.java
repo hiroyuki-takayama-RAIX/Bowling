@@ -7,7 +7,12 @@ public class Main {
 
 	public static void main(String[] args){
 		System.out.println("ボーリングシュミレーター!");
-		System.out.println("write rules");
+		System.out.println("ボールの組み合わせと投げる方向を調整してNPCより高いスコアを出そう！");
+		System.out.println("重いボールは倒せるボールの数も多いがコントロールが難しいぞ！");
+		System.out.println("軽いボールはコントロールしやすいが、あまりピンは倒れないぞ!");
+		System.out.println("後は左・真ん中・右と投げる方向を決めよう！");
+		System.out.println();
+		System.out.println("名前を入力してください：");
 		String name = new Scanner(System.in).nextLine();
 
 		Player player = new Player(name);
@@ -44,17 +49,21 @@ public class Main {
 
 		int i = 9;
 		for (int j = 0; j < 3; j++) {
-			if(j == 1 && player.board.getScore(i, 0) != "X"){
+			if(j == 2 && player.board.getScore(i, 0) != "X"){
+				player.board.setFrameScore(i);
 				break;
-			} else if(j == 1 && player.board.getScore(i, 1) != "/"){
+			} else if(j == 2 && player.board.getScore(i, 1) != "/"){
+				player.board.setFrameScore(i);
 				break;
 			}
 			oneThrowingAction(player, i, j, false);
 		}
-		for (int j = 0; j < 2; j++) {
-			if(j > 2 && npc.board.getScore(i, 0) != "X"){
+		for (int j = 0; j < 3; j++) {
+			if(j == 2 && npc.board.getScore(i, 0) != "X"){
+				npc.board.setFrameScore(i);
 				break;
-			} else if(j > 2 && npc.board.getScore(i, 1) != "/"){
+			} else if(j == 2 && npc.board.getScore(i, 1) != "/"){
+				npc.board.setFrameScore(i);
 				break;
 			}
 			oneThrowingAction(npc, i, j, true);
