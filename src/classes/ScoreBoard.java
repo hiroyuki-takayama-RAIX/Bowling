@@ -5,39 +5,85 @@ import java.util.*;
 public class ScoreBoard {
 	public String[][] score0109 = new String[][]{{"0", "0"},{"0", "0"},{"0", "0"},{"0", "0"},{"0", "0"},{"0", "0"},{"0", "0"},{"0", "0"},{"0", "0"}};
 	private String[] score10 = new String[]{"0", "0", "0"};
-	private String[] frameScore = new String[]{"0","0","0","0","0","0","0","0","0","0"};
+	private String[] frameScores = new String[]{"0","0","0","0","0","0","0","0","0","0"};
+
+	public String getScore(int frame, int throwing){
+		String score;
+		if(frame == 9){
+			score = score10[throwing];
+		}else{
+			score = score0109[frame][throwing];
+		}
+		return score;
+	}
+
+	public void setScore(int frame, int throwing, String score){
+		if(frame == 9){
+			score10[throwing] = score;
+		}else{
+			score0109[frame][throwing] = score;
+		}
+	}
 
 	public int getFrameScore(int frame){
-		return Integer.parseInt(this.frameScore[frame]);
+		return Integer.parseInt(this.frameScores[frame]);
 	}
 
 	public void setScore(int frame, int throwing, int score){
+		int lastScore = 0;
 		switch(frame){
 			case 9 -> {
-				if(score10[throwing] == "0"){
+				if(throwing > 0){
+					switch(score10[throwing - 1]){
+						case "X" -> {
+							lastScore = 10;
+						}
+						case "G", "-" -> {
+							lastScore = 0;
+						}
+						default -> {
+							lastScore = Integer.parseInt(score10[throwing - 1]);
+						}
+					}
 				}
-				if(throwing == 1 && score == 10){
+				if(score10[throwing] == "-"){
+					score10[throwing] = "0";
+				}
+				if(throwing == 0 && score == 10){
 					score10[throwing] = "X";
 					System.out.println("Strike!!!");
-				}else if(throwing == 2 && Integer.parseInt(score10[throwing]) + score == 10){
+				}else if(throwing == 1 && lastScore + score == 10){ //ここ計算がおかしい
 					score10[throwing] = "/";
 					System.out.println("Spare!");
 				}else if(score == 0 && (throwing == 1 || throwing == 2)) {
 					score10[throwing] = "-";
 					System.out.println("");
-				}else if(score == 0 && (throwing == 0)){
+				}else if(score == 0 && (throwing == 0)){ 
 					score10[throwing] = "G";
 				}else{
 					score10[throwing] = String.valueOf(score);
 				}
 			}
 			default -> {
-				if(score0109[frame][throwing] == "0"){
+				if(throwing > 0){
+					switch(score0109[frame][throwing - 1]){
+						case "X" -> {
+							lastScore = 10;
+						}
+						case "G", "-" -> {
+							lastScore = 0;
+						}
+						default -> {
+							lastScore = Integer.parseInt(score0109[frame][throwing - 1]);
+						}
+					}
 				}
-				if(throwing == 1 && score == 10){
+				if(throwing == 0 && score == 10){
 					score0109[frame][throwing] = "X";
-				}else if(throwing == 2 && Integer.parseInt(score0109[frame][throwing]) + score == 10){
+					System.out.println("Strike!!!");
+				}else if(throwing == 1 && lastScore + score == 10){
 					score0109[frame][throwing] = "/";
+					System.out.println("Spare!");
 				}else if(score == 0 && throwing == 1) {
 					score0109[frame][throwing] = "-";
 				}else if(score == 0 && throwing == 0){
@@ -55,44 +101,92 @@ public class ScoreBoard {
 		switch(frame) {
 			case 0 -> {
 				score = calculateFrameScore(score0109[frame]);
-				frameScore[frame] = String.valueOf(score);
+				frameScores[frame] = String.valueOf(score);
 			}
 			case 9 -> {
-				lastScore = Integer.parseInt(frameScore[frame - 1]);
+				lastScore = Integer.parseInt(frameScores[frame - 1]);
 				score = calculateFrameScore(score10);
-				frameScore[frame] = String.valueOf(score + lastScore);
+				frameScores[frame] = String.valueOf(score + lastScore);
 			}
 			default -> {
 				score = calculateFrameScore(score0109[frame]);
-				lastScore = Integer.parseInt(frameScore[frame - 1]);
-				frameScore[frame] = String.valueOf(score + lastScore);
+				lastScore = Integer.parseInt(frameScores[frame - 1]);
+				frameScores[frame] = String.valueOf(score + lastScore);
 			}
 		}
 	}
 
-	public void arrangeScore(int frame, int throwing){
+	public void arrangeFrameScore(int frame, int throwing){
 		if(frame > 0){
-			String lastFrame1 = score0109[frame - 1][0];
-			String lastFrame2 = score0109[frame - 1][1];
+			String lastScore10 = score0109[frame - 1][0];
+			String lastScore11 = score0109[frame - 1][1];
+			int score;
 			switch(throwing){
-				case 0:
-					if(lastFrame2 == "/" || lastFrame1 == "X"){
-						frameScore[frame -1] = String.valueOf(Integer.parseInt(lastFrame1) + Integer.parseInt(frameScore[frame -1]));
+				case 0 -> {
+					if (lastScore11 == "/" || lastScore10 == "X") {
+						score = convertUniqueScore(score0109[frame][throwing]);
+						frameScores[frame - 1] = String.valueOf(score + Integer.parseInt(frameScores[frame - 1]));
+						frameScores[frame] = String.valueOf(score + Integer.parseInt(frameScores[frame]));
 					}
-					break;
-				default:
-					if(lastFrame1 == "X"){
-						frameScore[frame -1] = String.valueOf(Integer.parseInt(lastFrame2) + Integer.parseInt(frameScore[frame -1]));
+				}
+				case 1 -> {
+					if (lastScore10 == "X") {
+						score = convertUniqueScore(score0109[frame][throwing]);
+						frameScores[frame - 1] = String.valueOf(score + Integer.parseInt(frameScores[frame - 1]));
+						frameScores[frame] = String.valueOf(score + Integer.parseInt(frameScores[frame]));
 					}
-					break;
+				}
+			}
+		}else if(frame > 1){
+			String lastScore10 = score0109[frame - 1][0];
+			String lastScore11 = score0109[frame - 1][1];
+			String lastScore20 = score0109[frame - 2][0];
+			String lastScore21 = score0109[frame - 2][1];
+			int score;
+			switch(throwing){
+				case 0 -> {
+					if (lastScore11 == "/" || lastScore10 == "X") {
+						score = convertUniqueScore(score0109[frame][throwing]);
+						frameScores[frame - 1] = String.valueOf(score + Integer.parseInt(frameScores[frame - 1]));
+						frameScores[frame] = String.valueOf(score + Integer.parseInt(frameScores[frame]));
+					}
+				}
+				default -> {
+					if (lastScore10 == "X") {
+						score = convertUniqueScore(score0109[frame][throwing]);
+						frameScores[frame - 1] = String.valueOf(score + Integer.parseInt(frameScores[frame - 1]));
+						frameScores[frame] = String.valueOf(score + Integer.parseInt(frameScores[frame]));
+					}
+				}
+			}
+			if (lastScore20 == "X") {
+				frameScores[frame - 2] = String.valueOf(Integer.parseInt(lastScore20) + Integer.parseInt(frameScores[frame - 2]));
+				frameScores[frame - 1] = String.valueOf(Integer.parseInt(lastScore20) + Integer.parseInt(frameScores[frame - 1]));
+				frameScores[frame] = String.valueOf(Integer.parseInt(lastScore20) + Integer.parseInt(frameScores[frame]));
 			}
 		}
 	}
 
-	public int calculateFrameScore(String[] scoreArray){
+	public int convertUniqueScore(String score){
+		int converted;
+		switch(score){
+			case "X" -> {
+				converted = 10;
+			}
+			case "G", "-" -> {
+				converted = 0;
+			}
+			default -> {
+				converted = Integer.parseInt(score);
+			}
+		}
+		return converted;
+	}
+
+	public int calculateFrameScore(String[] scores){
 		int[] score = new int[3];
-		for(int i = 0; i < scoreArray.length; i ++){
-			switch(scoreArray[i]){
+		for(int i = 0; i < scores.length; i ++){
+			switch(scores[i]){
 				case "X":
 					score[i] = 10;
 					break;
@@ -104,12 +198,11 @@ public class ScoreBoard {
 					score[i] = 0;
 					break;
 				default:
-					score[i] = Integer.parseInt(scoreArray[i]);
+					score[i] = Integer.parseInt(scores[i]);
 					break;
 			}
 		}
-		int total = Arrays.stream(score).sum();
-		return total;
+		return Arrays.stream(score).sum();
 	}
 
 	public void displayBoard(){
@@ -124,8 +217,8 @@ public class ScoreBoard {
 		System.out.printf("| %s %s %s |\n", score10[0], score10[1], score10[2]);
 
 		for (int i = 0; i < 9; i ++) {
-			System.out.printf("|\t%s\t", frameScore[i]);
+			System.out.printf("|\t%s\t", frameScores[i]);
 		}
-		System.out.printf("|\t%s\t|\n", frameScore[9]);
+		System.out.printf("|\t%s\t|\n", frameScores[9]);
 	}
 }

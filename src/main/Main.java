@@ -4,6 +4,7 @@ import classes.Player;
 import java.util.*;
 
 public class Main {
+
 	public static void main(String[] args){
 		System.out.println("ボーリングシュミレーター!");
 		System.out.println("write rules");
@@ -20,237 +21,50 @@ public class Main {
 		System.out.println();
 
 		System.out.println("ゲーム開始!!!");
-		for(int i = 0; i < 9; i ++){
-			for(int j = 0; j < 2; j ++) {
-				System.out.printf("%sの %d - %d 目の投球!\n", player.getName(), i + 1, j + 1);
-
-				String bowl;
-				while (true) {
-					System.out.println("どっちのボールを作る?");
-					System.out.println("1. 重いボール  2. 軽いボール");
-					String input = new Scanner(System.in).nextLine();
-					if (Objects.equals(input, "1")) { // = だとInvalid Inputになる
-						bowl = "heavy";
-						break;
-					} else if (Objects.equals(input, "2")) {
-						bowl = "light";
-						break;
-					} else {
-						System.out.println("無効な入力 : " + input);
-					}
+		for(int i = 0; i < 9; i ++) {
+			for (int j = 0; j < 2; j++) {
+				if(player.board.getScore(i, 0) == "X"){
+					player.board.setScore(i, j, "-");
+					continue;
 				}
-
-				String direction;
-				while (true) {
-					System.out.println("どの方向に投げる?");
-					System.out.println("1. 左   2. 真ん中   3.右");
-					String input = new Scanner(System.in).nextLine();
-					if (Objects.equals(input, "1")) {
-						direction = "left";
-						break;
-					} else if (Objects.equals(input, "2")) {
-						direction = "center";
-						break;
-					} else if (Objects.equals(input, "3")) {
-						direction = "right";
-						break;
-					} else {
-						System.out.println("無効な入力 : " + input);
-					}
-				}
-				System.out.printf("Debug ： Bowl %s, Direction %s\n", bowl, direction);
-				System.out.println();
-				player.throwBowl(bowl, direction, i, j);
-				System.out.println();
-				player.pines.displayPines();
-				player.board.arrangeScore(i, j);
-				System.out.println();
-				switch (j) {
-					case 0 -> {
-						System.out.println();
-						System.out.println(player.getName() + "のスコアボード");
-						player.board.displayBoard();
-					}
-					case 1 -> {
-						player.board.setFrameScore(i);
-						player.board.arrangeScore(i, j);
-						System.out.println();
-						System.out.println(player.getName() + "のスコアボード");
-						player.board.displayBoard();
-					}
-				}
+				oneThrowingAction(player, i, j, false);
 			}
-
-			Random npcsChoice = new Random();
-			Scanner anyInput = new Scanner(System.in);
-			for(int j = 0; j < 2; j ++){
-				System.out.println();
-				System.out.printf("%sの %d - %d 目の投球!\n", npc.getName(), i + 1, j + 1);
-				System.out.println("Enter : 次へ");
-				String anyline = anyInput.nextLine();
-
-				String bowl;
-				boolean choice1 = npcsChoice.nextBoolean();
-				if(choice1 == true){ // = だとInvalid Inputになる
-					bowl = "heavy";
-				}else{
-					bowl = "light";
+			for (int j = 0; j < 2; j++) {
+				if(npc.board.getScore(i, 0) == "X"){
+					npc.board.setScore(i, j, "-");
+					continue;
 				}
-
-				String direction = "left";
-				int choice2 = npcsChoice.nextInt(0, 3);
-				if(choice2 == 0){
-					direction = "left";
-				}else if(choice2 == 1){
-					direction = "center";
-				}else if(choice2 == 2) {
-					direction = "right";
-				}
-
-				System.out.printf("Debug ： Bowl %s, Direction %s\n", bowl, direction);
-				npc.throwBowl(bowl, direction, i, j);
-				System.out.println();
-				npc.pines.displayPines();
-				npc.board.arrangeScore(i, j);
-				System.out.println();
-				switch(j) {
-					case 0 -> {
-						System.out.println();
-						System.out.println(npc.getName() + "のスコアボード");
-						npc.board.displayBoard();
-					}
-					case 1 -> {
-						npc.board.setFrameScore(i);
-						npc.board.arrangeScore(i, j);
-						System.out.println();
-						System.out.println(npc.getName() + "のスコアボード");
-						npc.board.displayBoard();
-					}
-				}
-				System.out.println();
-				System.out.println("Enter : 次へ");
-				anyline = anyInput.nextLine();
+				oneThrowingAction(npc, i, j, true);
 			}
 			player.pines.resetPines();
 			npc.pines.resetPines();
 		}
 
-		//10投球目
 		int i = 9;
-		for(int j = 0; j < 3; j ++) {
-			System.out.printf("%sの %d - %d 目の投球!\n", player.getName(), i + 1, j + 1);
-
-			String bowl;
-			while (true) {
-				System.out.println("どっちのボールを作る?");
-				System.out.println("1. 重いボール  2. 軽いボール");
-				String input = new Scanner(System.in).nextLine();
-				if (Objects.equals(input, "1")) { // = だとInvalid Inputになる
-					bowl = "heavy";
-					break;
-				} else if (Objects.equals(input, "2")) {
-					bowl = "light";
-					break;
-				} else {
-					System.out.println("無効な入力 : " + input);
-				}
+		for (int j = 0; j < 3; j++) {
+			if(j == 1 && player.board.getScore(i, 0) != "X"){
+				continue;
+			} else if(j == 1 && player.board.getScore(i, 1) != "/"){
+				continue;
 			}
-
-			String direction;
-			while (true) {
-				System.out.println("どの方向に投げる?");
-				System.out.println("1. 左   2. 真ん中   3.右");
-				String input = new Scanner(System.in).nextLine();
-				if (Objects.equals(input, "1")) {
-					direction = "left";
-					break;
-				} else if (Objects.equals(input, "2")) {
-					direction = "center";
-					break;
-				} else if (Objects.equals(input, "3")) {
-					direction = "right";
-					break;
-				} else {
-					System.out.println("Invalid Input : " + input);
-				}
+			oneThrowingAction(player, i, j, false);
+		}
+		for (int j = 0; j < 2; j++) {
+			if(j == 1 && npc.board.getScore(i, 0) != "X"){
+				continue;
+			} else if(j == 1 && npc.board.getScore(i, 1) != "/"){
+				continue;
 			}
-			System.out.printf("Debug ： Bowl %s, Direction %s\n", bowl, direction);
-			player.throwBowl(bowl, direction, i, j);
-			System.out.println();
-			player.pines.displayPines();
-			player.board.arrangeScore(i, j);
-			System.out.println();
-			switch (j) {
-				case 2 -> {
-					player.board.setFrameScore(i);
-					player.board.arrangeScore(i, j);
-					System.out.println();
-					System.out.println(player.getName() + "のスコアボード");
-					player.board.displayBoard();
-				}
-				default -> {
-					System.out.println();
-					System.out.println(player.getName() + "のスコアボード");
-					player.board.displayBoard();
-				}
-			}
+			oneThrowingAction(npc, i, j, true);
 		}
 
-		Random npcsChoice = new Random();
-		Scanner anyInput = new Scanner(System.in);
-		for(int j = 0; j < 3; j ++){
-			System.out.printf("%sの %d - %d 目の投球!\n", npc.getName(), i + 1, j + 1);
-			System.out.println("Enter : 次へ");
-			String anyline = anyInput.nextLine();
-
-			String bowl;
-			boolean choice1 = npcsChoice.nextBoolean();
-			if(choice1 == true){ // = だとInvalid Inputになる
-				bowl = "heavy";
-			}else{
-				bowl = "light";
-			}
-
-			String direction = "left";
-			int choice2 = npcsChoice.nextInt(0, 3);
-			if(choice2 == 0){
-				direction = "left";
-			}else if(choice2 == 1){
-				direction = "center";
-			}else if(choice2 == 2) {
-				direction = "right";
-			}
-
-			System.out.printf("Debug ： Bowl %s, Direction %s\n", bowl, direction);
-			npc.throwBowl(bowl, direction, i, j);
-			System.out.println();
-			npc.pines.displayPines();
-			npc.board.arrangeScore(i, j);
-			System.out.println();
-			switch(j) {
-				default -> {
-					System.out.println();
-					System.out.println(npc.getName() + "のスコアボード");
-					npc.board.displayBoard();
-				}
-				case 1 -> {
-					npc.board.setFrameScore(i);
-					npc.board.arrangeScore(i, j);
-					System.out.println();
-					System.out.println(npc.getName() + "のスコアボード");
-					npc.board.displayBoard();
-				}
-			}
-			System.out.println();
-			System.out.println("Enter : 次へ");
-			anyline = anyInput.nextLine();
-		}
+		System.out.println("試合終了！");
+		System.out.println();
 		System.out.println(player.getName() + "のスコアボード");
 		player.board.displayBoard();
+		System.out.println();
 		System.out.println(npc.getName() + "のスコアボード");
 		npc.board.displayBoard();
-		System.out.println();
-
 		int playerScore = player.board.getFrameScore(i);
 		int npcScore = npc.board.getFrameScore(i);
 		if(playerScore > npcScore){
@@ -261,6 +75,110 @@ public class Main {
 			System.out.println("引き分け！");
 		}
 	}
+
+	public static void oneThrowingAction(Player player, int frame, int throwing, boolean auto){
+		System.out.println();
+		System.out.printf("%sの %d - %d 目の投球!\n", player.getName(), frame + 1, throwing + 1);
+		Random autoChoice = new Random(); //NPCはランダムで弾を選び、ボールを投げる
+		Scanner input = new Scanner(System.in);
+		System.out.println();
+
+		String bowl;
+		if(auto){
+			boolean isHeavy = autoChoice.nextBoolean();
+			if(isHeavy){
+				bowl = "heavy";
+			}else{
+				bowl = "light";
+			}
+		}else{
+			while (true) {
+				System.out.println("どっちのボールを作る?");
+				System.out.println("1. 重いボール  2. 軽いボール");
+				String line = new Scanner(System.in).nextLine(); //重いボールと軽いボールを選ぶ
+				if (Objects.equals(line, "1")) { //１と２以外の入力があったときは無効な入力として再度入力を求める
+					bowl = "heavy";
+					break;
+				} else if (Objects.equals(line, "2")) {
+					bowl = "light";
+					break;
+				} else {
+					System.out.println("無効な入力 : " + line);
+				}
+			}
+			System.out.println();
+		}
+
+		String direction = "left";
+		if(auto){
+			int randomDirection = autoChoice.nextInt(0, 3);
+			if(randomDirection == 0){
+				direction = "left";
+			}else if(randomDirection == 1){
+				direction = "center";
+			}else if(randomDirection == 2) {
+				direction = "right";
+			}
+			System.out.println("Enter : 次へ");
+			String anyline = input.nextLine();
+		}else{
+			while (true) {
+				System.out.println("どの方向に投げる?");
+				System.out.println("1. 左   2. 真ん中   3.右");
+				String line = input.nextLine(); //投げる方向を選ぶ
+				if (Objects.equals(line, "1")) {
+					direction = "left";
+					break;
+				} else if (Objects.equals(line, "2")) {
+					direction = "center";
+					break;
+				} else if (Objects.equals(line, "3")) {
+					direction = "right";
+					break;
+				} else {
+					System.out.println("無効な入力 : " + input);
+				}
+			}
+			System.out.println();
+		}
+
+		//System.out.printf("Debug ： Bowl %s, Direction %s\n", bowl, direction); //デバッグ用
+		//System.out.println();
+		player.throwBowl(bowl, direction, frame, throwing);
+		player.pines.displayPines();
+		if(auto){
+			System.out.println();
+			System.out.println("Enter : 次へ");
+			String anyline = input.nextLine();
+		}
+		System.out.println();
+		switch (throwing) {
+			case 0 -> { //iフレームの１投球目の点数処理
+				player.board.arrangeFrameScore(frame, throwing);
+				System.out.println(player.getName() + "のスコアボード");
+				player.board.displayBoard();
+			}
+			case 1 -> { //iフレームの２投球目の点数処理
+				player.board.arrangeFrameScore(frame, throwing);
+				if(frame != 9){
+					player.board.setFrameScore(frame);
+				}
+				System.out.println(player.getName() + "のスコアボード");
+				player.board.displayBoard();
+			}
+			case 2 -> { //10フレーム目の３投球目の処理
+				player.board.arrangeFrameScore(frame, throwing);
+				player.board.setFrameScore(frame);
+				System.out.println(player.getName() + "のスコアボード");
+				player.board.displayBoard();}
+		}
+		if(auto){
+			System.out.println();
+			System.out.println("Enter : 次へ");
+			String anyline = input.nextLine();
+		}
+	}
+
 }
 
 

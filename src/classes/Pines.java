@@ -21,7 +21,7 @@ public class Pines {
 	public int getLeftPinesNumber(){
 		int count = 0;
 		for (String s : left) {
-			if (s == "|hiroshi") {
+			if (s == "|") {
 				count++;
 			}
 		}
