@@ -24,14 +24,16 @@ public class Main {
 		for(int i = 0; i < 9; i ++) {
 			for (int j = 0; j < 2; j++) {
 				if(player.board.getScore(i, 0) == "X"){
-					player.board.setScore(i, j, "-");
+					player.board.setScore2(i, j, "-");
+					player.board.setFrameScore(i);
 					continue;
 				}
 				oneThrowingAction(player, i, j, false);
 			}
 			for (int j = 0; j < 2; j++) {
 				if(npc.board.getScore(i, 0) == "X"){
-					npc.board.setScore(i, j, "-");
+					npc.board.setScore2(i, j, "-");
+					player.board.setFrameScore(i);
 					continue;
 				}
 				oneThrowingAction(npc, i, j, true);
@@ -43,17 +45,17 @@ public class Main {
 		int i = 9;
 		for (int j = 0; j < 3; j++) {
 			if(j == 1 && player.board.getScore(i, 0) != "X"){
-				continue;
+				break;
 			} else if(j == 1 && player.board.getScore(i, 1) != "/"){
-				continue;
+				break;
 			}
 			oneThrowingAction(player, i, j, false);
 		}
 		for (int j = 0; j < 2; j++) {
-			if(j == 1 && npc.board.getScore(i, 0) != "X"){
-				continue;
-			} else if(j == 1 && npc.board.getScore(i, 1) != "/"){
-				continue;
+			if(j > 2 && npc.board.getScore(i, 0) != "X"){
+				break;
+			} else if(j > 2 && npc.board.getScore(i, 1) != "/"){
+				break;
 			}
 			oneThrowingAction(npc, i, j, true);
 		}

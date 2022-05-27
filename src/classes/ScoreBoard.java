@@ -17,7 +17,7 @@ public class ScoreBoard {
 		return score;
 	}
 
-	public void setScore(int frame, int throwing, String score){
+	public void setScore2(int frame, int throwing, String score){
 		if(frame == 9){
 			score10[throwing] = score;
 		}else{
