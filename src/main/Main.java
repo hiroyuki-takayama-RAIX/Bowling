@@ -1,11 +1,12 @@
 package main;
 
 import classes.Player;
+
 import java.util.*;
 
 public class Main {
 
-	public static void main(String[] args){
+	public static void main(String[] args) {
 		System.out.println("ボーリングシュミレーター!");
 		System.out.println("ボールの組み合わせと投げる方向を調整してNPCより高いスコアを出そう！");
 		System.out.println("重いボールは倒せるボールの数も多いがコントロールが難しいぞ！");
@@ -26,9 +27,9 @@ public class Main {
 		System.out.println();
 
 		System.out.println("ゲーム開始!!!");
-		for(int i = 0; i < 9; i ++) {
+		for (int i = 0; i < 9; i++) {
 			for (int j = 0; j < 2; j++) {
-				if(player.board.getScore(i, 0) == "X"){
+				if (player.board.getScore(i, 0) == "X") {
 					player.board.setScore2(i, j, "-");
 					player.board.setFrameScore(i);
 					continue;
@@ -36,7 +37,7 @@ public class Main {
 				oneThrowingAction(player, i, j, false);
 			}
 			for (int j = 0; j < 2; j++) {
-				if(npc.board.getScore(i, 0) == "X"){
+				if (npc.board.getScore(i, 0) == "X") {
 					npc.board.setScore2(i, j, "-");
 					player.board.setFrameScore(i);
 					continue;
@@ -49,20 +50,20 @@ public class Main {
 
 		int i = 9;
 		for (int j = 0; j < 3; j++) {
-			if(j == 2 && player.board.getScore(i, 0) != "X"){
+			if (j == 2 && player.board.getScore(i, 0) != "X") {
 				player.board.setFrameScore(i);
 				break;
-			} else if(j == 2 && player.board.getScore(i, 1) != "/"){
+			} else if (j == 2 && player.board.getScore(i, 1) != "/") {
 				player.board.setFrameScore(i);
 				break;
 			}
 			oneThrowingAction(player, i, j, false);
 		}
 		for (int j = 0; j < 3; j++) {
-			if(j == 2 && npc.board.getScore(i, 0) != "X"){
+			if (j == 2 && npc.board.getScore(i, 0) != "X") {
 				npc.board.setFrameScore(i);
 				break;
-			} else if(j == 2 && npc.board.getScore(i, 1) != "/"){
+			} else if (j == 2 && npc.board.getScore(i, 1) != "/") {
 				npc.board.setFrameScore(i);
 				break;
 			}
@@ -78,16 +79,16 @@ public class Main {
 		npc.board.displayBoard();
 		int playerScore = player.board.getFrameScore(i);
 		int npcScore = npc.board.getFrameScore(i);
-		if(playerScore > npcScore){
+		if (playerScore > npcScore) {
 			System.out.println(player.getName() + "の勝利！おめでとう！");
-		}else if(playerScore < npcScore){
+		} else if (playerScore < npcScore) {
 			System.out.println(npc.getName() + "の勝利！残念・・・！");
-		}else{
+		} else {
 			System.out.println("引き分け！");
 		}
 	}
 
-	public static void oneThrowingAction(Player player, int frame, int throwing, boolean auto){
+	public static void oneThrowingAction(Player player, int frame, int throwing, boolean auto) {
 		System.out.println();
 		System.out.printf("%sの %d - %d 目の投球!\n", player.getName(), frame + 1, throwing + 1);
 		Random autoChoice = new Random(); //NPCはランダムで弾を選び、ボールを投げる
@@ -95,14 +96,14 @@ public class Main {
 		System.out.println();
 
 		String bowl;
-		if(auto){
+		if (auto) {
 			boolean isHeavy = autoChoice.nextBoolean();
-			if(isHeavy){
+			if (isHeavy) {
 				bowl = "heavy";
-			}else{
+			} else {
 				bowl = "light";
 			}
-		}else{
+		} else {
 			while (true) {
 				System.out.println("どっちのボールを使う?");
 				System.out.println("1. 重いボール  2. 軽いボール");
@@ -121,18 +122,18 @@ public class Main {
 		}
 
 		String direction = "left";
-		if(auto){
+		if (auto) {
 			int randomDirection = autoChoice.nextInt(0, 3);
-			if(randomDirection == 0){
+			if (randomDirection == 0) {
 				direction = "left";
-			}else if(randomDirection == 1){
+			} else if (randomDirection == 1) {
 				direction = "center";
-			}else if(randomDirection == 2) {
+			} else if (randomDirection == 2) {
 				direction = "right";
 			}
 			System.out.println("Enter : 次へ");
 			String anyline = input.nextLine();
-		}else{
+		} else {
 			while (true) {
 				System.out.println("どの方向に投げる?");
 				System.out.println("1. 左   2. 真ん中   3.右");
@@ -157,7 +158,7 @@ public class Main {
 		//System.out.println();
 		player.throwBowl(bowl, direction, frame, throwing);
 		player.pines.displayPines();
-		if(auto){
+		if (auto) {
 			System.out.println();
 			System.out.println("Enter : 次へ");
 			String anyline = input.nextLine();
@@ -171,7 +172,7 @@ public class Main {
 			}
 			case 1 -> { //iフレームの２投球目の点数処理
 				player.board.arrangeFrameScore(frame, throwing);
-				if(frame != 9){
+				if (frame != 9) {
 					player.board.setFrameScore(frame);
 				}
 				System.out.println(player.getName() + "のスコアボード");
@@ -181,9 +182,10 @@ public class Main {
 				player.board.arrangeFrameScore(frame, throwing);
 				player.board.setFrameScore(frame);
 				System.out.println(player.getName() + "のスコアボード");
-				player.board.displayBoard();}
+				player.board.displayBoard();
+			}
 		}
-		if(auto){
+		if (auto) {
 			System.out.println();
 			System.out.println("Enter : 次へ");
 			String anyline = input.nextLine();
