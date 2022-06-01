@@ -141,7 +141,7 @@ public class Main {
 		}
 	}
 
-	public static void oneFrameAction(Player player,int frame, boolean auto){
+	public static void oneFrameAction(Player player, int frame, boolean auto) {
 		for (int throwing = 0; throwing < 2; throwing++) {
 			if (player.board.getScore(frame, 0) == "X") {
 				player.board.setScore2(frame, throwing, "-");
@@ -152,7 +152,7 @@ public class Main {
 		}
 	}
 
-	public static void finalFrameAction(Player player, boolean auto){
+	public static void finalFrameAction(Player player, boolean auto) {
 		for (int throwing = 0; throwing < 3; throwing++) {
 			if (throwing == 2 && player.board.getScore(9, 0) != "X") {
 				player.board.setFrameScore(9);

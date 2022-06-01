@@ -18,7 +18,7 @@ public class Pines {
 		right = new String[]{"|", "|", "|"};
 	}
 
-	public int getPinesNumber(String position){
+	public int getPinesNumber(String position) {
 		int count = 0;
 		String[] pines = getPines(position);
 		for (String pine : pines) {
@@ -29,7 +29,7 @@ public class Pines {
 		return count;
 	}
 
-	public int knockPine(String position, int n){
+	public int knockPine(String position, int n) {
 		int knocked = 0;
 		String[] pines = getPines(position);
 		if (pines[n] == "|") {
@@ -39,9 +39,9 @@ public class Pines {
 		return knocked;
 	}
 
-	public String[] getPines(String position){ //文字列で変数を指定するやり方で良いのか？
+	public String[] getPines(String position) { //文字列で変数を指定するやり方で良いのか？
 		String[] pines = new String[4]; //「配列が初期化されていない可能性があります」のエラーを消すために付け加えた
-		switch(position){
+		switch (position) {
 			case "left" -> {
 				pines = left;
 			}

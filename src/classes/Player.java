@@ -99,7 +99,7 @@ public class Player {
 		return random.nextInt(1, 7) + random.nextInt(1, 7) - 2;
 	}
 
-	public void displayBoard(){
+	public void displayBoard() {
 		System.out.println(this.getName() + "のスコアボード");
 		this.board.displayBoard();
 		System.out.println();

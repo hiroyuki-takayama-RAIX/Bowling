@@ -72,7 +72,7 @@ public class ScoreBoard {
 		} else {
 			scores = score0109[frame];
 		}
-		if(frame != 0){
+		if (frame != 0) {
 			lastScore = Integer.parseInt(frameScores[frame - 1]);
 		}
 		score = calculateFrameScore(scores);
