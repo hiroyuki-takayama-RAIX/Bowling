@@ -6,7 +6,7 @@ import java.util.Scanner;
 
 public class Player {
 	private final String name;
-	public ScoreBoard board = new ScoreBoard();
+	public ScoreBoard board = new ScoreBoard();  //ここのアクセス制限をなるべく厳しくしたいが、オブジェクト指向も維持したい
 	public Pines pines = new Pines();
 
 	public Player(String name) {
@@ -27,11 +27,8 @@ public class Player {
 
 		int tempKnocked = knockPinesTemp(bowl);
 		//System.out.printf("Debug ： Knocked1 is %d\n", + tempKnocked);
-		if (tempKnocked == 0) {
-			tempKnocked = 1;
-		}
 
-		Random random = new Random();
+		Random random = new Random(); //ここのランダム性を無くせばもっとピンが倒れるようになる。
 		int firstKnocked = random.nextInt(0, tempKnocked + 1);
 		//System.out.printf("Debug ： firstKnocked is %d\n", + firstKnocked);
 
@@ -41,26 +38,26 @@ public class Player {
 		int thirdKnocked = random.nextInt(0, secondKnocked + 1);
 		//System.out.printf("Debug ： thirdKnocked is %d\n", + thirdKnocked);
 
-		switch (direction) {
+		switch (direction) { //ここの分岐をリファクタリングでコンパクトにできないか・・・？
 			case "right" -> {
-				int takeover1 = knockPartOfPines(firstKnocked, "right", 0);
-				int takeover2 = knockPartOfPines(secondKnocked, "center", takeover1);
-				knocked = knockPartOfPines(thirdKnocked, "left", takeover2);
+				int takeover1 = knockPines(firstKnocked, "right", 0);
+				int takeover2 = knockPines(secondKnocked, "center", takeover1);
+				knocked = knockPines(thirdKnocked, "left", takeover2);
 			}
 			case "left" -> {
-				int takeover1 = knockPartOfPines(firstKnocked, "left", 0);
-				int takeover2 = knockPartOfPines(secondKnocked, "center", takeover1);
-				knocked = knockPartOfPines(thirdKnocked, "right", takeover2);
+				int takeover1 = knockPines(firstKnocked, "left", 0);
+				int takeover2 = knockPines(secondKnocked, "center", takeover1);
+				knocked = knockPines(thirdKnocked, "right", takeover2);
 			}
 			case "center" -> {
-				int takeover1 = knockPartOfPines(firstKnocked, "center", 0);
+				int takeover1 = knockPines(firstKnocked, "center", 0);
 				boolean isLeft = random.nextBoolean();
 				if (isLeft) {
-					int takeover2 = knockPartOfPines(secondKnocked, "left", takeover1);
-					knocked = knockPartOfPines(thirdKnocked, "right", takeover2);
+					int takeover2 = knockPines(secondKnocked, "left", takeover1);
+					knocked = knockPines(thirdKnocked, "right", takeover2);
 				} else {
-					int takeover2 = knockPartOfPines(secondKnocked, "right", takeover1);
-					knocked = knockPartOfPines(thirdKnocked, "left", takeover2);
+					int takeover2 = knockPines(secondKnocked, "right", takeover1);
+					knocked = knockPines(thirdKnocked, "left", takeover2);
 				}
 			}
 		}
@@ -68,44 +65,16 @@ public class Player {
 		//System.out.printf("Debug : Knocked2 is %d\n", + knock);
 	}
 
-	public int knockPartOfPines(int knocked, String direction, int takeover) {
-		switch (direction) {
-			case "left" -> {
-				int n = pines.getLeftPinesNumber();
-				if (n >= knocked) { //knockPines()で指定した数よりも残っているピンが多い時
-					for (int i = 0; i < knocked; i++) {
-						takeover += pines.knockLeftPine(i);
-					}
-				} else { //knockPinesで指定した数よりも残っているピンが少ない時
-					for (int i = 0; i < n; i++) {
-						takeover += pines.knockLeftPine(i);
-					}
-				}
-			}
-			case "center" -> {
-				int n = pines.getCenterPinesNumber();
-				if (n >= knocked) {
-					for (int i = 0; i < knocked; i++) {
-						takeover += pines.knockCenterPine(i);
-					}
-				} else {
-					for (int i = 0; i < n; i++) {
-						takeover += pines.knockCenterPine(i);
-					}
-				}
-			}
-			case "right" -> {
-				int n = pines.getRightPinesNumber();
-				if (n >= knocked) {
-					for (int i = 0; i < knocked; i++) {
-						takeover += pines.knockRightPine(i);
-					}
-				} else {
-					for (int i = 0; i < n; i++) {
-						takeover += pines.knockRightPine(i);
-					}
-				}
-			}
+	public int knockPines(int knocked, String direction, int takeover) {
+		int n = pines.getPinesNumber(direction);
+		int limit;
+		if (n >= knocked) {  //knockPines()で指定した数よりも残っているピンが多い時
+			limit = knocked;
+		} else {
+			limit = n;
+		}
+		for (int i = 0; i < limit; i++) {
+			takeover += pines.knockPine(direction, i);
 		}
 		return takeover;
 	}
@@ -119,12 +88,20 @@ public class Player {
 				tempKnocked = random.nextInt(0, 11);
 			}
 		}
+		if (tempKnocked == 0) {
+			tempKnocked = 1;
+		}
 		return tempKnocked;
 	}
 
 	public int nextPseudoGauss() { //軽いボールを選んだ時のピンの倒す本数の確率変数を生成する.正規分布みたいな確率分布。
 		Random random = new Random();
-		int result = random.nextInt(1, 7) + random.nextInt(1, 7) - 2;
-		return result;
+		return random.nextInt(1, 7) + random.nextInt(1, 7) - 2;
+	}
+
+	public void displayBoard(){
+		System.out.println(this.getName() + "のスコアボード");
+		this.board.displayBoard();
+		System.out.println();
 	}
 }

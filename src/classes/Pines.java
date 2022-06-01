@@ -18,65 +18,44 @@ public class Pines {
 		right = new String[]{"|", "|", "|"};
 	}
 
-	public int getLeftPinesNumber() {
+	public int getPinesNumber(String position){
 		int count = 0;
-		for (String s : left) {
-			if (s == "|") {
+		String[] pines = getPines(position);
+		for (String pine : pines) {
+			if (pine == "|") {
 				count++;
 			}
 		}
 		return count;
 	}
 
-	public int getCenterPinesNumber() {
-		int count = 0;
-		for (String s : center) {
-			if (s == "|") {
-				count++;
+	public int knockPine(String position, int n){
+		int knocked = 0;
+		String[] pines = getPines(position);
+		if (pines[n] == "|") {
+			pines[n] = "X";
+			knocked = 1;
+		}
+		return knocked;
+	}
+
+	public String[] getPines(String position){ //文字列で変数を指定するやり方で良いのか？
+		String[] pines = new String[4]; //「配列が初期化されていない可能性があります」のエラーを消すために付け加えた
+		switch(position){
+			case "left" -> {
+				pines = left;
+			}
+			case "center" -> {
+				pines = center;
+			}
+			case "right" -> {
+				pines = right;
+			}
+			default -> {
+				System.out.println("引数 position には\"left\", \"center\", \"right\"のいずれかをString方で指定してください！");
 			}
 		}
-		return count;
+		return pines;
 	}
 
-	public int getRightPinesNumber() {
-		int count = 0;
-		for (String s : right) {
-			if (s == "|") {
-				count++;
-			}
-		}
-		return count;
-	}
-
-	public int getPinesNumber() {
-		int count = getLeftPinesNumber() + getCenterPinesNumber() + getRightPinesNumber();
-		return count;
-	}
-
-	public int knockLeftPine(int n) {
-		int knocked = 0;
-		if (left[n] == "|") {
-			left[n] = "X";
-			knocked = 1;
-		}
-		return knocked;
-	}
-
-	public int knockCenterPine(int n) {
-		int knocked = 0;
-		if (center[n] == "|") {
-			center[n] = "X";
-			knocked = 1;
-		}
-		return knocked;
-	}
-
-	public int knockRightPine(int n) {
-		int knocked = 0;
-		if (right[n] == "|") {
-			right[n] = "X";
-			knocked = 1;
-		}
-		return knocked;
-	}
 }

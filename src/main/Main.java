@@ -19,66 +19,26 @@ public class Main {
 		Player player = new Player(name);
 		Player npc = new Player();
 
-		System.out.println(player.getName() + "のスコアボード");
-		player.board.displayBoard();
-		System.out.println();
-		System.out.println(npc.getName() + "のスコアボード");
-		npc.board.displayBoard();
-		System.out.println();
+		player.displayBoard();
+		npc.displayBoard();
 
 		System.out.println("ゲーム開始!!!");
 		for (int i = 0; i < 9; i++) {
-			for (int j = 0; j < 2; j++) {
-				if (player.board.getScore(i, 0) == "X") {
-					player.board.setScore2(i, j, "-");
-					player.board.setFrameScore(i);
-					continue;
-				}
-				oneThrowingAction(player, i, j, false);
-			}
-			for (int j = 0; j < 2; j++) {
-				if (npc.board.getScore(i, 0) == "X") {
-					npc.board.setScore2(i, j, "-");
-					player.board.setFrameScore(i);
-					continue;
-				}
-				oneThrowingAction(npc, i, j, true);
-			}
+			oneFrameAction(player, i, false);
+			oneFrameAction(npc, i, true);
 			player.pines.resetPines();
 			npc.pines.resetPines();
 		}
 
-		int i = 9;
-		for (int j = 0; j < 3; j++) {
-			if (j == 2 && player.board.getScore(i, 0) != "X") {
-				player.board.setFrameScore(i);
-				break;
-			} else if (j == 2 && player.board.getScore(i, 1) != "/") {
-				player.board.setFrameScore(i);
-				break;
-			}
-			oneThrowingAction(player, i, j, false);
-		}
-		for (int j = 0; j < 3; j++) {
-			if (j == 2 && npc.board.getScore(i, 0) != "X") {
-				npc.board.setFrameScore(i);
-				break;
-			} else if (j == 2 && npc.board.getScore(i, 1) != "/") {
-				npc.board.setFrameScore(i);
-				break;
-			}
-			oneThrowingAction(npc, i, j, true);
-		}
+		finalFrameAction(player, false);
+		finalFrameAction(npc, true);
 
 		System.out.println("試合終了！");
 		System.out.println();
-		System.out.println(player.getName() + "のスコアボード");
-		player.board.displayBoard();
-		System.out.println();
-		System.out.println(npc.getName() + "のスコアボード");
-		npc.board.displayBoard();
-		int playerScore = player.board.getFrameScore(i);
-		int npcScore = npc.board.getFrameScore(i);
+		player.displayBoard();
+		npc.displayBoard();
+		int playerScore = player.board.getFrameScore(9);
+		int npcScore = npc.board.getFrameScore(9);
 		if (playerScore > npcScore) {
 			System.out.println(player.getName() + "の勝利！おめでとう！");
 		} else if (playerScore < npcScore) {
@@ -132,7 +92,7 @@ public class Main {
 				direction = "right";
 			}
 			System.out.println("Enter : 次へ");
-			String anyline = input.nextLine();
+			String anyLine = input.nextLine();
 		} else {
 			while (true) {
 				System.out.println("どの方向に投げる?");
@@ -164,34 +124,45 @@ public class Main {
 			String anyline = input.nextLine();
 		}
 		System.out.println();
+		player.board.arrangeBoard(frame, throwing);
 		switch (throwing) {
-			case 0 -> { //iフレームの１投球目の点数処理
-				player.board.arrangeFrameScore(frame, throwing);
-				System.out.println(player.getName() + "のスコアボード");
-				player.board.displayBoard();
-			}
 			case 1 -> { //iフレームの２投球目の点数処理
-				player.board.arrangeFrameScore(frame, throwing);
 				if (frame != 9) {
 					player.board.setFrameScore(frame);
 				}
-				System.out.println(player.getName() + "のスコアボード");
-				player.board.displayBoard();
 			}
-			case 2 -> { //10フレーム目の３投球目の処理
-				player.board.arrangeFrameScore(frame, throwing);
-				player.board.setFrameScore(frame);
-				System.out.println(player.getName() + "のスコアボード");
-				player.board.displayBoard();
-			}
+			case 2 -> player.board.setFrameScore(frame);
 		}
+		player.displayBoard();
 		if (auto) {
 			System.out.println();
 			System.out.println("Enter : 次へ");
-			String anyline = input.nextLine();
+			String anyLine = input.nextLine();
+		}
+	}
+
+	public static void oneFrameAction(Player player,int frame, boolean auto){
+		for (int throwing = 0; throwing < 2; throwing++) {
+			if (player.board.getScore(frame, 0) == "X") {
+				player.board.setScore2(frame, throwing, "-");
+				player.board.setFrameScore(frame);
+				continue;
+			}
+			oneThrowingAction(player, frame, throwing, auto);
+		}
+	}
+
+	public static void finalFrameAction(Player player, boolean auto){
+		for (int throwing = 0; throwing < 3; throwing++) {
+			if (throwing == 2 && player.board.getScore(9, 0) != "X") {
+				player.board.setFrameScore(9);
+				break;
+			} else if (throwing == 2 && player.board.getScore(9, 1) != "/") {
+				player.board.setFrameScore(9);
+				break;
+			}
+			oneThrowingAction(player, 9, throwing, auto);
 		}
 	}
 
 }
-
-
