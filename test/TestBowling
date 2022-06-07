@@ -1,7 +1,13 @@
 
+import jdk.jfr.StackTrace;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 public class TestBowling{
 	@Test
+	@DisplayName("ピンが倒れているかのテスト")
+	public void testDisplay(){
+		//中身を書いてチェックしたい項目を指定する。
+	}
 }
 
