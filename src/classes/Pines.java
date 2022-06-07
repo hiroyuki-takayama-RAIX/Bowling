@@ -39,7 +39,7 @@ public class Pines {
 		return knocked;
 	}
 
-	public String[] getPines(String position) { //文字列で変数を指定するやり方で良いのか？
+	public String[] getPines(String position) { //文字列で変数を指定するやり方で良いのか？ intで指定するようにする。コンピューターが理解しやすいようにする。文字列の判断はトラブルが多い？
 		String[] pines = new String[4]; //「配列が初期化されていない可能性があります」のエラーを消すために付け加えた
 		switch (position) {
 			case "left" -> {

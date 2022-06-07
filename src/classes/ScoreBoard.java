@@ -119,7 +119,7 @@ public class ScoreBoard {
 	public int convertUniqueScore(String score) {
 		int converted;
 		switch (score) {
-			case "X" -> converted = 10;
+			case "X", "/" -> converted = 10;
 			case "G", "-" -> converted = 0;
 			default -> converted = Integer.parseInt(score);
 		}
