@@ -4,7 +4,7 @@ import java.util.*;
 
 public class ScoreBoard {
 	private String[][] score0109 = new String[][]{{"0", "0"}, {"0", "0"}, {"0", "0"}, {"0", "0"}, {"0", "0"}, {"0", "0"}, {"0", "0"}, {"0", "0"}, {"0", "0"}};
-	private String[] score10 = new String[]{"0", "0", "0"};
+	private String[] score10 = new String[]{"1", "1", "1"};
 	private String[] frameScores = new String[]{"0", "0", "0", "0", "0", "0", "0", "0", "0", "0"};
 
 	public String getScore(int frame, int throwing) {
